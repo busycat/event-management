@@ -1,2 +1,3 @@
-// $(document).ready(function() {
-// });
+function submit(e) {
+  e.preventDefault();
+}

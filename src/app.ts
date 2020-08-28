@@ -36,6 +36,7 @@ app.use(
 );
 
 app.get("/api/events", apiController.getAllEvents);
+app.post("/api/events", apiController.createEvent);
 app.get("/api/seed", apiController.Seed);
 
 app.get("/", homeController.index);

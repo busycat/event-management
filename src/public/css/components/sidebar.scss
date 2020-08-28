@@ -1,0 +1,98 @@
+.sidebar-nav-container {
+  height: 100%;
+  background-color: $sidebar-bg;
+  border-right: 1px solid $sidebar-hover;
+  padding-top: 0;
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    .sidebar-item,
+    .childbar-item {
+      display: flex;
+      font-size: $sidebar-item-height/2;
+      align-items: center;
+      font-family: $type-2;
+      font-size: $font-size-base;
+      color: $sidebar-text;
+      text-decoration: none;
+      height: $sidebar-item-height;
+      .sidebar-icon {
+        height: $sidebar-item-height;
+        width: $sidebar-item-height;
+        padding: $sidebar-item-height/4 0;
+        text-align: center;
+        i,
+        svg,
+        img {
+          font-size: $sidebar-item-height/2;
+          line-height: 1;
+        }
+        svg.csvg {
+          height: $sidebar-item-height * 2/3;
+          width: $sidebar-item-height * 2/3;
+          margin-top: -$sidebar-item-height * 0.08333333333;
+          border-radius: $sidebar-item-height/10;
+          font-size: initial;
+          line-height: initial;
+          text {
+            font-family: $type-2;
+          }
+        }
+      }
+      // .sidebar-link-text {
+      // }
+    }
+    .active {
+      .sidebar-item {
+        font-weight: 700;
+        background-color: $sidebar-active;
+        color: $sidebar-text-active;
+        ~ .childbar-item.active {
+          background-color: $sidebar-active;
+          color: $sidebar-text-active;
+          font-weight: 600;
+        }
+        + .childbar-item {
+          border-top: 1px solid $sidebar-hover;
+        }
+      }
+    }
+    .sidebar-item,
+    .childbar-item {
+      &:hover {
+        background-color: $sidebar-hover;
+      }
+    }
+    :not(.active) {
+      .childbar-item {
+        display: none !important;
+      }
+    }
+  }
+  &.bd {
+    backdrop-filter: saturate(180%) blur(20px);
+    height: 100%;
+    background-color: rgba($sidebar-bg, 0.8);
+    .sidebar-nav {
+      .active {
+        .sidebar-item {
+          background-color: rgba($sidebar-active, 0.2);
+          ~ .childbar-item {
+            background-color: $sidebar-active;
+            background-color: rgba($sidebar-active, 0.2);
+          }
+        }
+        .sidebar-item,
+        .childbar-item {
+          &:hover {
+            background-color: $sidebar-hover;
+            background-color: rgba($sidebar-hover, 0.1) !important;
+          }
+        }
+      }
+    }
+  }
+}

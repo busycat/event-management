@@ -1,68 +1,118 @@
-@import "themes/default/variables";
+@import 'variable.scss';
+@import 'mixins';
+@import 'root';
+@import 'reboot';
+@import 'type';
+@import 'images';
+@import 'code';
+@import 'grid';
+@import 'tables';
+@import 'forms';
+@import 'buttons';
+@import 'transitions';
+@import 'dropdown';
+@import 'button-group';
+@import 'input-group';
+@import 'custom-forms';
+@import 'nav';
+@import 'navbar';
+@import 'card';
+@import 'breadcrumb';
+@import 'pagination';
+@import 'badge';
+@import 'jumbotron';
+@import 'alert';
+@import 'progress';
+@import 'media';
+@import 'list-group';
+@import 'close';
+@import 'toasts';
+@import 'modal';
+@import 'tooltip';
+@import 'popover';
+@import 'carousel';
+@import 'spinners';
+@import 'utilities';
 
-@import "lib/bootstrap/bootstrap";
-@import "lib/font-awesome/font-awesome";
+@import 'components/layout.scss';
+@import 'components/header.scss';
 
-@import "themes/default/default";
-
-// Scaffolding
-// -------------------------
-
-html {
+.mdi::before {
+  font-size: 24px;
+  line-height: 14px;
+}
+.btn .mdi::before {
   position: relative;
-  min-height: 100%;
+  margin-right: 0.5rem;
+}
+.btn-xs .mdi::before {
+  font-size: 18px;
+  top: 3px;
+}
+.btn-sm .mdi::before {
+  font-size: 18px;
+  top: 3px;
+}
+.dropdown-menu .mdi {
+  width: 18px;
+}
+.dropdown-menu .mdi::before {
+  position: relative;
+  top: 4px;
+  left: -8px;
+}
+.nav .mdi::before {
+  position: relative;
+  top: 4px;
+}
+.navbar .navbar-toggle .mdi::before {
+  position: relative;
+  top: 4px;
+  color: #fff;
+}
+.breadcrumb .mdi::before {
+  position: relative;
+  top: 4px;
+}
+.breadcrumb a:hover {
+  text-decoration: none;
+}
+.breadcrumb a:hover span {
+  text-decoration: underline;
+}
+.alert .mdi::before {
+  position: relative;
+  top: 4px;
+  margin-right: 2px;
+}
+.input-group-addon .mdi::before {
+  position: relative;
+  top: 3px;
+}
+.navbar-brand .mdi::before {
+  position: relative;
+  top: 2px;
+  margin-right: 2px;
+}
+.list-group-item .mdi::before {
+  position: relative;
+  top: 3px;
+  left: -3px;
 }
 
 body {
-  padding-top: 80px;
-  margin-bottom: 75px;
-}
-
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-
-  p, ul {
-    margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  > div.container {
+    flex: 1;
+    overflow: auto;
   }
 }
-
-// Input Fields
-// -------------------------
-
-textarea {
-  resize: vertical;
-}
-
-// Navbar
-// -------------------------
-
-.navbar-nav img {
-  width: 30px;
-  height: 30px;
-  margin: -15px 15px -15px;
-}
-
-// Alerts
-// -------------------------
-
-.alert {
-  margin-top: 20px;
-}
-
-// Thumbnails
-// -------------------------
-
-.thumbnail {
-  padding: 0;
-  border-radius: 0;
-  box-shadow: 0 0 5px #ccc, inset 0 0 0 #000;
-}
-
-// Font Icons
-// -------------------------
-
-.fa {
-  margin-right: 6px;
+.tag {
+  background: linear-gradient(45deg, $themecolor, $theme-light);
+  color: $white;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  border-radius: 2rem;
 }

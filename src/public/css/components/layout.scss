@@ -1,0 +1,105 @@
+.main-container {
+  flex-grow: 1;
+  header {
+    height: $header-height;
+    .navbar-brand {
+      flex-shrink: 0;
+      font-size: initial;
+      padding: 0;
+      width: $sidebar-width-full;
+      .logo {
+        margin-top: 0.25 * $header-height;
+        img {
+          display: block;
+        }
+      }
+    }
+  }
+  .main-cont {
+    z-index: -1;
+    height: calc(100vh - #{$header-height});
+    overflow: hidden;
+    display: flex;
+    cs-sidebar {
+      z-index: 1100;
+      flex-shrink: 0;
+      width: $sidebar-width-full;
+      height: 100%;
+      .sidebar-nav-container {
+        z-index: 1101;
+      }
+    }
+    .content {
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+  }
+}
+
+[data-sidebartype='mini'] {
+  &.main-container:not(.mobile) {
+    header {
+      .navbar-brand {
+        width: $sidebar-width-mini;
+      }
+    }
+    .main-cont {
+      cs-sidebar {
+        width: $sidebar-width-mini;
+        .sidebar-nav-container {
+          .sidebar-nav {
+            .sidebar-item {
+              .sidebar-icon {
+                width: $sidebar-width-mini;
+              }
+              .sidebar-link-text {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+.main-container.mobile {
+  header {
+    .navbar-brand {
+      width: initial;
+    }
+  }
+  .main-cont {
+    // position: relative;
+    cs-sidebar {
+      position: absolute;
+      transition-timing-function: ease-out;
+      transition-duration: 0.3s;
+      width: $sidebar-width-full;
+      height: calc(100vh - #{$header-height});
+      left: -$sidebar-width-full;
+      + .content {
+        filter: none;
+        transition-duration: 0.3s;
+      }
+      &.sidebar-expanded {
+        left: 0;
+        + .content {
+          filter: blur(1px);
+          // filter: grayscale(100%) blur(1px);
+          pointer-events: none;
+        }
+      }
+    }
+  }
+}
+.main-container.mobile.no-header {
+  header {
+    display: none;
+  }
+  .main-cont {
+    height: 100vh;
+    cs-sidebar {
+      height: 100vh;
+    }
+  }
+}

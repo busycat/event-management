@@ -18,8 +18,8 @@ export type EventDocument = mongoose.Document & {
 
 const eventSchema = new mongoose.Schema(
   {
-    name: { type: String, unique: true },
-    slug: { type: String, unique: true },
+    name: { type: String, unique: true, required: true },
+    slug: { type: String, unique: true, },
     eventDate: Date,
     eventType: String,
     location: String,

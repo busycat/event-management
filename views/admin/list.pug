@@ -60,24 +60,44 @@ block content
                                             span(aria-hidden='true') »
                                             span.sr-only Last
                                                 
-                .modal.fade#form(tabindex='-1' role='dialog' aria-labelledby='exampleModalLabel' aria-hidden='true')
-                    .modal-dialog.modal-dialog-centered(role='document')
+                .modal.fade#form(tabindex='-1' role='dialog' aria-hidden='true')
+                    .bg-white.modal-dialog(role='document')
                         .modal-content
-                        .modal-header.border-bottom-0
-                            h5.modal-title#exampleModalLabel Create Account
-                            button.close(type='button' data-dismiss='modal' aria-label='Close')
-                            span(aria-hidden='true') ×
-                        form
+                            .modal-header
+                                h5.modal-title Add Event
+                                button.close(type='button' data-dismiss='modal' aria-label='Close')
+                                span(aria-hidden='true') ×
                             .modal-body
-                            .form-group
-                                label(for='email1') Email address
-                                input.form-control#email1(type='email' aria-describedby='emailHelp' placeholder='Enter email')
-                                small#emailHelp.form-text.text-muted Your information is safe with us.
-                            .form-group
-                                label(for='password1') Password
-                                input.form-control#password1(type='password' placeholder='Password')
-                            .form-group
-                                label(for='password1') Confirm Password
-                                input.form-control#password2(type='password' placeholder='Confirm Password')
-                            .modal-footer.border-top-0.d-flex.justify-content-center
-                            button.btn.btn-success(type='submit') Submit
+                                form.needs-validation#event(onsubmit="submit()" action="/api/events" method="POST" enctype="multipart/form-data")
+                                    .modal-body
+                                    .form-group
+                                        label(for='name') Name
+                                        input.form-control#name(name='name' type='string' required minlength='3' placeholder='Enter Name')
+                                    .form-group
+                                        label(for='eventDate') Event Date
+                                        input.form-control#eventDate(name='eventDate' type='date' placeholder='Event Date')
+                                    .form-group
+                                        label(for='eventType') Event Type
+                                        select.form-control#eventType(name='eventType')
+                                            option Festival
+                                            option Party
+                                            option Workshop
+                                    .form-group
+                                        label(for='description') Description
+                                        textarea.form-control#eventType(name='description' placeholder='Enter Description' rows=3)
+
+                                    .form-group
+                                        label(for='lat') Latitude
+                                        input.form-control#lat(name='lat' type='number' placeholder='Latitude')
+                                    .form-group
+                                        label(for='lon') Longitude
+                                        input.form-control#lon(name='lon' type='number' placeholder='Longitude')
+                                    .form-group.custom-file.mb-3
+                                        input.custom-file-input#image(type='file' required)
+                                        label.custom-file-label(for='image') Choose Image...
+                                        .invalid-feedback Image error
+                                    .form-group.custom-file.mb-3
+                                        input.custom-file-input#file(type='file' required)
+                                        label.custom-file-label(for='file') Choose file...
+                                        .invalid-feedback File error
+                                    button.btn.btn-primary(type='submit') Save changes
