@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+     .row
+            .col.py-5
+                .h1 Event Management
+                .text-center
+                    table.table.table-striped.table-responsive.w-100
+                        thead.thead-default
+                            tr
+                                th Name
+                                th Date
+                                th Type
+                                th Description
+                                th Location
+                                th Coordinates
+                                th Image
+                                th File
+                                th Actions
+                        tbody
+                            each event in events
+                                tr
+                                    td(scope='row') #{event.name}
+                                    td #{event.date}
+                                    td #{event.type}
+                                    td #{event.description}
+                                    td #{event.location}
+                                    td #{event.lat},#{event.lon}
+                                    td
+                                        img(src=event.image, style={height: '20px'})
+                                    td
+                                        a.mdi.mdi-file(href=event.file) File
+                                    td
+                                        button.btn.btn-warning(type='button')
+                                            i.mdi.mdi-pencil
+                                            | Edit
+                                        button.btn.btn-danger(type='button')
+                                            i.mdi.mdi-delete
+                                            | Delete

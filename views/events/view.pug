@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+    .container
+        .row
+            .col.py-5
+                img.w-100.rounded(src=event.image, alt=event.name)
+                h2.text-center.pt-3 #{event.name}
+                if event.location
+                    a.btn.mr-3.tag(href="https://www.google.com/maps/place/" + event.location)
+                        i.mdi.mdi-map
+                        | #{event.location}
+                else
+                    a.btn.mr-3.tag(href="https://www.google.com/maps/place/" + event.lat + ","+ event.lon)
+                        i.mdi.mdi-map
+                        | #{event.lat},#{event.lon}
+                a.btn.tag(href=event.file)
+                    i.mdi.mdi-file
+                    | Invite
+
+                p.pt-5 #{event.description}
+                    

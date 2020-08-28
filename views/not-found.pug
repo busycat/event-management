@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col.text-center
+        img.w-100(src="/images/not-found.gif", alt="Not Found Image")
+        if message
+            h1.text-center #{message}
+        else
+            h1.text-center Page Not Found
+        a.btn.btn-lg.mb-5.pb-5.btn-link(href="/events") Go home

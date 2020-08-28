@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  .container
+    .row
+      .col.text-center
+        img.w-100(src="/images/not-found.gif", alt="Not Found Image")
+        if message
+            h1.text-center.text-danger.mb-5.pb-5 #{message}
+        else
+            h1.text-center.text-danger.mb-5.pb-5 Sorry some error has occured

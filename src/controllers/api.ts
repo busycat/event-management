@@ -1,33 +1,52 @@
-"use strict";
+import { Response, Request } from "express";
+import mongoose from "mongoose";
+import { _Event, EventDocument, getSlug } from "../models/Event";
+import { getEventType, getCityName } from "../helpers/pickRandom";
 
-import graph from "fbgraph";
-import { Response, Request, NextFunction } from "express";
-import { UserDocument } from "../models/User";
+const event = mongoose.model("Event");
 
-
-/**
- * List of API examples.
- * @route GET /api
- */
-export const getApi = (req: Request, res: Response) => {
-    res.render("api/index", {
-        title: "API Examples"
-    });
+export const getAllEvents = async (req: Request, res: Response) => {
+  const ele = await _Event.find({});
+  res.json({
+    name: "Ok",
+    length: ele.length,
+    data: ele
+  });
 };
 
-/**
- * Facebook API example.
- * @route GET /api/facebook
- */
-export const getFacebook = (req: Request, res: Response, next: NextFunction) => {
-    const user = req.user as UserDocument;
-    const token = user.tokens.find((token: any) => token.kind === "facebook");
-    graph.setAccessToken(token.accessToken);
-    graph.get(`${user.facebook}?fields=id,name,email,first_name,last_name,gender,link,locale,timezone`, (err: Error, results: graph.FacebookUser) => {
-        if (err) { return next(err); }
-        res.render("api/facebook", {
-            title: "Facebook API",
-            profile: results
-        });
-    });
+export const uploadFile = (req: Request, res: Response) => {
+  res.write(_Event.modelName);
+};
+
+export const Seed = (_req: Request, res: Response) => {
+  const eventType = getEventType();
+  const city = getCityName();
+  const name = `${eventType} ${city.city.city}`;
+  const slug = getSlug(name);
+  const image = `/images/${Math.floor(Math.random() * 4) + 1}.webp`;
+  const eventDate = new Date(
+    2020,
+    Math.floor(Math.random() * 12) ,
+    Math.floor(Math.random() * 30) + 1
+  );
+  const p = new event({
+    name,
+    slug,
+    eventType,
+    image,
+    eventDate,
+    location: `${city.city.city},${city.state.key}`,
+    description: "This is description",
+    lat: 25.5,
+    lon: 58.97,
+    file: "/files/f1"
+  } as EventDocument);
+  p.save((err, doc) => {
+    if (err) {
+      if (err.code === 11000) res.statusCode = 409;
+      res.json(err);
+    } else {
+      res.json(doc);
+    }
+  });
 };

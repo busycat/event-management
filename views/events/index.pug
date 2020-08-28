@@ -1,0 +1,46 @@
+extends ../layout
+
+block content
+    h2.text-center.py-3 List of events
+    .container
+        .row
+            each event in events
+                .col-md-4.pb-3
+                    .card
+                        img.card-img-top(src=event.image alt='Card image cap')
+
+                        .card-body
+                            if event.location
+                                a.btn.tag(href="https://www.google.com/maps/place/" + event.location)
+                                    i.mdi.mdi-map
+                                    | #{event.location}
+                            else
+                                a.btn.tag(href="https://www.google.com/maps/place/" + event.lat + ","+ event.lon)
+                                    i.mdi.mdi-map
+                                    | #{event.lat},#{event.lon}
+                        .card-body
+                            h5.card-title #{event.name}
+                            p.card-text #{event.description}
+                        .card-footer
+                            a.btn.btn-primary(href='/event/'+event.slug) 
+                                i.mdi.mdi-calendar
+                                | View Event
+                            a.btn.btn-success(href='https://api.whatsapp.com/send?text= Hey I have an invite for you for '+event.name)
+                                i.mdi.mdi-whatsapp
+                                | Share
+        if paginate
+            .row
+                .col-12
+                    nav.text-center(aria-label='Page navigation')
+                        ul.pagination
+                            li.page-item
+                                a.page-link(href='?page=0' aria-label='First')
+                                    span(aria-hidden='true') «
+                                    span.sr-only First
+                            each pg in paginate.pages
+                                li.page-item(class=(page === pg) ? 'active' : undefined)
+                                    a.page-link(href='?page=' + pg) #{pg}
+                            li.page-item
+                                a.page-link(href='?page='+(paginate.lastPage-1) aria-label='Last')
+                                    span(aria-hidden='true') »
+                                    span.sr-only Last
