@@ -14,6 +14,7 @@ export const index = async (req: Request, res: Response) => {
     .sort("slug")
     .skip(page * limit)
     .limit(limit);
+  
   const pages = Array.from(Array(lastPage).keys());
   if (events.length === 0)
     res.render("error", { message: "No events to view" });

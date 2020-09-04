@@ -93,11 +93,11 @@ block content
                                         label(for='lon') Longitude
                                         input.form-control#lon(name='lon' type='number' placeholder='Longitude')
                                     .form-group.custom-file.mb-3
-                                        input.custom-file-input#image(type='file' required)
+                                        input.custom-file-input#image(name='image' type='file' accept="image/*" required)
                                         label.custom-file-label(for='image') Choose Image...
                                         .invalid-feedback Image error
                                     .form-group.custom-file.mb-3
-                                        input.custom-file-input#file(type='file' required)
+                                        input.custom-file-input#file(name='file' type='file' required)
                                         label.custom-file-label(for='file') Choose file...
                                         .invalid-feedback File error
                                     button.btn.btn-primary(type='submit') Save changes

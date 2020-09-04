@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import { _Event, EventDocument, getSlug } from "../models/Event";
 import { getEventType, getCityName } from "../helpers/pickRandom";
 import { IncomingForm } from "formidable";
+import { uploadDir } from "../const";
+import { rename } from "fs";
+import { extname } from "path";
 const event = mongoose.model("Event");
-
 export const getAllEvents = async (req: Request, res: Response) => {
   const ele = await _Event.find({});
   res.json({
@@ -15,28 +17,52 @@ export const getAllEvents = async (req: Request, res: Response) => {
 };
 export const createEvent = async (req: Request, res: Response) => {
   const form = new IncomingForm();
-  form.uploadDir = __dirname + "/public/files/";
+  // form.uploadDir = "/tmp";
   form.keepExtensions = true;
-  const image = "";
-  const file = "";
-  const doc = new _Event({
-    description: req.body.description,
-    name: req.body.name,
-    slug: getSlug(req.body.name),
-    lat: req.body.lat,
-    lon: req.body.lon,
-    city: req.body.city,
-    eventDate: req.body.eventDate,
-    eventType: req.body.eventType,
-    image: req.body.image,
-  });
-  // doc.save({}, (err, obj) => {
-  //   if (err) {
-  //     res.json({ error: err });
-  //   } else {
-  //     res.json(obj);
-  //   }
-  // });
+  try {
+    form.parse(req, (err, fields, files) => {
+      const slug = getSlug(fields.name as string);;
+      const fileField: { newPath: string; oldPath: string; url: string } = {
+        oldPath: files.file.path,
+        newPath: uploadDir + slug + extname(files.file.name),
+        url: "images/" + slug + extname(files.file.name)
+      };
+      const imageField: { newPath: string; oldPath: string; url: string } = {
+        oldPath: files.image.path,
+        newPath: uploadDir + slug + extname(files.image.name),
+        url: "images/" + slug + extname(files.image.name)
+      };
+      rename(fileField.oldPath, fileField.newPath, () => {
+        // Not handled
+      });
+      rename(imageField.oldPath, imageField.newPath, () => {
+        // Not handled
+      });
+
+      const doc = new _Event({
+        description: fields.description,
+        name: fields.name,
+        slug: getSlug(fields.name as string),
+        lat: fields.lat,
+        lon: fields.lon,
+        city: fields.city,
+        eventDate: fields.eventDate,
+        eventType: fields.eventType,
+        image: imageField.url,
+        file: fileField.url
+      });
+
+      doc.save({}, (err, obj) => {
+        if (err) {
+          res.json({ error: err });
+        } else {
+          res.redirect("/admin");
+        }
+      });
+    });
+  } catch {
+    res.json({ sd: "Oe" });
+  }
 };
 
 export const uploadFile = (req: Request, res: Response) => {
