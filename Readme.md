@@ -15,7 +15,7 @@ npm run watch
 ```
 
 # Screenshots
-![]('https://raw.github.com/cossth/event-management/master/docs/home.png')
-![]('https://raw.github.com/cossth/event-management/master/docs/admin.png')
-![]('https://raw.github.com/cossth/event-management/master/docs/edit.png')
-![]('https://raw.github.com/cossth/event-management/master/docs/add.png')
+![Home]('https://raw.github.com/cossth/event-management/master/docs/home.png')
+![Admin]('https://raw.github.com/cossth/event-management/master/docs/admin.png')
+![Edit]('https://raw.github.com/cossth/event-management/master/docs/edit.png')
+![Add]('https://raw.github.com/cossth/event-management/master/docs/add.png')
