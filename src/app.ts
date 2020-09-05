@@ -28,7 +28,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 mkdir(uploadDir, () => {
   // Exception handling not done bnecause its just POC
 });
-
+app.locals.moment = require("moment");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -44,10 +44,13 @@ app.use(
 
 app.get("/api/events", apiController.getAllEvents);
 app.post("/api/events", apiController.createEvent);
+app.put("/api/events/:id", apiController.updateEvent);
+app.delete("/api/events/:id", apiController.deleteEvent);
 app.get("/api/seed", apiController.Seed);
 
 app.get("/", homeController.index);
 app.get("/admin", adminController.getTable);
+app.get("/admin/:id", adminController.editOne);
 app.get("/event/:id", eventsController.eventPage);
 app.get("/events", eventsController.index);
 app.all("*", (req, res) => {

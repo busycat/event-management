@@ -1,103 +1,78 @@
 extends ../layout
+include ../partials/modal
 
 block content
-     .row
-            .col.py-5
-                .d-flex.mb-3
-                    .h1 Event Management
-                    .flex-grow-1
-                    button.btn.btn-success(type='button' data-toggle='modal' data-target='#form')
-                        i.mdi.mdi-plus
-                        | Add
-                .text-center.table-responsive
-                    table.table.table-striped
-                        thead.thead-default
+
+    nav.mt-3(aria-label='breadcrumb')
+        ol.breadcrumb
+            li.breadcrumb-item.active(aria-current='page')
+                a(href="/events") Home
+            li.breadcrumb-item.active(aria-current='page') List Of Events
+    .row
+        .col.pb-5
+            .d-flex.mb-3
+                .h1 Event Management
+                .flex-grow-1
+                button.btn.btn-success(type='button' data-toggle='modal' data-target='#form')
+                    i.mdi.mdi-plus
+                    | Add
+            .text-center.table-responsive
+                table.table.table-striped
+                    thead.thead-default
+                        tr
+                            th Name
+                            th Date
+                            th Type
+                            th Description
+                            th Location
+                            th Coordinates
+                            th Image
+                            th File
+                            th Actions
+                    tbody
+                        each event in events
                             tr
-                                th Name
-                                th Date
-                                th Type
-                                th Description
-                                th Location
-                                th Coordinates
-                                th Image
-                                th File
-                                th Actions
-                        tbody
-                            each event in events
-                                tr
-                                    td(scope='row') #{event.name}
-                                    td #{event.date}
-                                    td #{event.type}
-                                    td #{event.description}
-                                    td #{event.location}
-                                    td #{event.lat},#{event.lon}
-                                    td
-                                        img(src=event.image, style={height: '20px'})
-                                    td
-                                        a.mdi.mdi-file(href=event.file) File
-                                    td
-                                        button.btn.btn-warning(type='button')
-                                            i.mdi.mdi-pencil
-                                            | Edit
-                                        button.btn.btn-danger(type='button')
-                                            i.mdi.mdi-delete
-                                            | Delete
+                                td(scope='row') #{event.name}
+                                td #{moment(event.eventDate).format('DD MMM,YYYY')}
+                                td #{event.eventType}
+                                td #{event.description}
+                                td #{event.location}
+                                td #{event.lat},#{event.lon}
+                                td
+                                    img(src=event.image, style={height: '20px'})
+                                td
+                                    a.mdi.mdi-file(href=event.file) File
+                                td
+                                    a.btn.btn-warning(href="/admin/" + event.id)
+                                        i.mdi.mdi-pencil
+                                        | Edit
+                                    button.btn.btn-danger(type='button' onclick="deleteEvent('"+ event.id +"')")
+                                        i.mdi.mdi-delete
+                                        | Delete
 
-                if paginate
-                    .row
-                        .col-12
-                            nav.text-center(aria-label='Page navigation')
-                                ul.pagination
-                                    li.page-item
-                                        a.page-link(href='?page=0' aria-label='First')
-                                            span(aria-hidden='true') «
-                                            span.sr-only First
-                                    each pg in paginate.pages
-                                        li.page-item(class=(page === pg) ? 'active' : undefined)
-                                            a.page-link(href='?page=' + pg) #{pg}
-                                    li.page-item
-                                        a.page-link(href='?page='+(paginate.lastPage-1) aria-label='Last')
-                                            span(aria-hidden='true') »
-                                            span.sr-only Last
-                                                
-                .modal.fade#form(tabindex='-1' role='dialog' aria-hidden='true')
-                    .bg-white.modal-dialog(role='document')
-                        .modal-content
-                            .modal-header
-                                h5.modal-title Add Event
-                                button.close(type='button' data-dismiss='modal' aria-label='Close')
-                                span(aria-hidden='true') ×
-                            .modal-body
-                                form.needs-validation#event(onsubmit="submit()" action="/api/events" method="POST" enctype="multipart/form-data")
-                                    .modal-body
-                                    .form-group
-                                        label(for='name') Name
-                                        input.form-control#name(name='name' type='string' required minlength='3' placeholder='Enter Name')
-                                    .form-group
-                                        label(for='eventDate') Event Date
-                                        input.form-control#eventDate(name='eventDate' type='date' placeholder='Event Date')
-                                    .form-group
-                                        label(for='eventType') Event Type
-                                        select.form-control#eventType(name='eventType')
-                                            option Festival
-                                            option Party
-                                            option Workshop
-                                    .form-group
-                                        label(for='description') Description
-                                        textarea.form-control#eventType(name='description' placeholder='Enter Description' rows=3)
+            if paginate
+                .row
+                    .col-12
+                        nav.text-center(aria-label='Page navigation')
+                            ul.pagination
+                                li.page-item
+                                    a.page-link(href='?page=0' aria-label='First')
+                                        span(aria-hidden='true') «
+                                        span.sr-only First
+                                each pg in paginate.pages
+                                    li.page-item(class=(page === pg) ? 'active' : undefined)
+                                        a.page-link(href='?page=' + pg) #{pg}
+                                li.page-item
+                                    a.page-link(href='?page='+(paginate.lastPage-1) aria-label='Last')
+                                        span(aria-hidden='true') »
+                                        span.sr-only Last
 
-                                    .form-group
-                                        label(for='lat') Latitude
-                                        input.form-control#lat(name='lat' type='number' placeholder='Latitude')
-                                    .form-group
-                                        label(for='lon') Longitude
-                                        input.form-control#lon(name='lon' type='number' placeholder='Longitude')
-                                    .form-group.custom-file.mb-3
-                                        input.custom-file-input#image(name='image' type='file' accept="image/*" required)
-                                        label.custom-file-label(for='image') Choose Image...
-                                        .invalid-feedback Image error
-                                    .form-group.custom-file.mb-3
-                                        input.custom-file-input#file(name='file' type='file' required)
-                                        label.custom-file-label(for='file') Choose file...
-                                        .invalid-feedback File error
-                                    button.btn.btn-primary(type='submit') Save changes
+            .modal.fade#form(tabindex='-1' role='dialog' aria-hidden='true')
+                .bg-white.modal-dialog(role='document')
+                    .modal-content
+                        .modal-header
+                            h5.modal-title Add Event
+                            button.close(type='button' data-dismiss='modal' aria-label='Close')
+                            span(aria-hidden='true') ×
+                        .modal-body
+                            +modal(undefined, {})

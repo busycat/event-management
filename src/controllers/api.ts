@@ -21,7 +21,7 @@ export const createEvent = async (req: Request, res: Response) => {
   form.keepExtensions = true;
   try {
     form.parse(req, (err, fields, files) => {
-      const slug = getSlug(fields.name as string);;
+      const slug = getSlug(fields.name as string);
       const fileField: { newPath: string; oldPath: string; url: string } = {
         oldPath: files.file.path,
         newPath: uploadDir + slug + extname(files.file.name),
@@ -45,6 +45,7 @@ export const createEvent = async (req: Request, res: Response) => {
         slug: getSlug(fields.name as string),
         lat: fields.lat,
         lon: fields.lon,
+        location: fields.location,
         city: fields.city,
         eventDate: fields.eventDate,
         eventType: fields.eventType,
@@ -53,20 +54,55 @@ export const createEvent = async (req: Request, res: Response) => {
       });
 
       doc.save({}, (err, obj) => {
-        if (err) {
-          res.json({ error: err });
+        if (err || !obj) {
+          res.statusCode = 400;
+          res.json(err);
         } else {
-          res.redirect("/admin");
+          res.json(obj);
         }
       });
     });
   } catch {
-    res.json({ sd: "Oe" });
+    res.json({ sd: "Error" });
+  }
+};
+export const updateEvent = async (req: Request, res: Response) => {
+  const id = req.params.id;
+  const event = await _Event.findById(id);
+
+  if (!event || !event._id) {
+    res.render("error", { message: "Event not found." });
+    res.end();
+  } else {
+    const form = new IncomingForm();
+    form.parse(req, (err, fields, files) => {
+      console.log(fields.eventDate);
+      event.name = "" + fields.name;
+      event.eventDate = new Date(Date.parse("" + fields.eventDate));
+      event.eventType = "" + fields.eventType;
+      event.location = "" + fields.location;
+      event.lat = +fields.lat;
+      event.lon = +fields.lon;
+      event.description = "" + fields.description;
+      event.save((a, e) => {
+        if (a && !e) res.json(a || e);
+        else res.json({ success: true });
+      });
+    });
   }
 };
 
-export const uploadFile = (req: Request, res: Response) => {
-  res.write(_Event.modelName);
+export const deleteEvent = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  _Event.findByIdAndDelete(id, (a, b) => {
+    if (!a) {
+      res.json({ success: true });
+    } else {
+      res.statusCode = 400;
+      res.json(a);
+    }
+  });
 };
 
 export const Seed = (_req: Request, res: Response) => {

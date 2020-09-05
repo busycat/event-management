@@ -24,26 +24,33 @@ const eventSchema = new mongoose.Schema(
       required: [true, "Name is required"]
     },
     slug: { type: String, unique: true },
-    eventDate: Date,
-    eventType: String,
+    eventDate: {
+      type: Date,
+      default: new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+    },
+    eventType: { type: String, default: "Event" },
     location: {
       type: String,
+      required: [true, "Event Location is required"],
       minlength: [5, "Location must be minimum 5 characters"],
       maxlength: [64, "Location must be maximum 64 characters"]
     },
-    lat: Number,
-    lon: Number,
+    lat: { type: Number, min: [-90, "minimum -90"], max: [90, "Max 90"] , default: 0},
+    lon: { type: Number, min: [-180, "minimum -180"], max: [180, "Max 180"] , default : 0},
     image: {
+      required: [true, "Image is required"],
       type: String,
       maxlength: [128, "Image path too long"]
     },
     description: {
+      required: [true, "Description is required"],
       type: String,
       maxlength: [1024, "Description can be max 1024 chars long"]
     },
 
     file: {
       type: String,
+      required: [true, "File is required"],
       maxlength: [128, "File path too long"]
     }
   },

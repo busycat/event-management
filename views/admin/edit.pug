@@ -1,0 +1,12 @@
+extends ../layout
+include ../partials/modal
+
+block content
+    nav.mt-3(aria-label='breadcrumb')
+        ol.breadcrumb
+            li.breadcrumb-item.active(aria-current='page')
+                a(href="/events") Home
+            li.breadcrumb-item.active(aria-current='page')
+                a(href="/admin") List Of Events
+            li.breadcrumb-item.active(aria-current='page') Edit Event
+    +modal(event.id, event)

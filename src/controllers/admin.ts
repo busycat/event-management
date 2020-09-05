@@ -33,3 +33,18 @@ export const getTable = async (req: Request, res: Response) => {
           : undefined
     });
 };
+
+export const editOne = async (req: Request, res: Response) => {
+  const id = req.params.id ;
+  const event = await _Event.findById(id);
+
+  if (!event || !event._id) {
+    res.render("error", { message: "Event not found." });
+    res.end();
+  }
+  else
+    res.render("admin/edit", {
+      title: "Admin",
+      event,
+    });
+};
